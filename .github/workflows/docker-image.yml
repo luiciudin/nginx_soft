@@ -28,3 +28,5 @@ jobs:
           args: --acl public-read --delete
           source_dir: html/
           destination_dir: s3://nginxhtmlfiles/
+        env:
+          AWS_S3_BUCKET: nginxhtmlfiles
