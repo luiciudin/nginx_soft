@@ -11,16 +11,6 @@ jobs:
       - name: Initial checkout
         uses: actions/checkout@v3
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build & push docker image
-        run: |
-          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/nginx:${{ github.run_number }} .
-          docker push ${{ secrets.DOCKER_USERNAME }}/nginx:${{ github.run_number }}
   deploy:
     runs-on: ubuntu-22.04
     needs: [build]
@@ -38,19 +28,3 @@ jobs:
           args: --acl public-read --delete
           source_dir: html/
           destination_dir: s3://nginxhtmlfiles/
-          
-      - name: Start the docker container
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          script: |
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            docker container rm -f nginx
-            docker pull ${{ secrets.DOCKER_USERNAME }}/nginx:${{ github.run_number }}
-            docker run -d \
-            -p 80:80 \
-            --name nginx \
-            ${{ secrets.DOCKER_USERNAME }}/nginx:${{ github.run_number }}
