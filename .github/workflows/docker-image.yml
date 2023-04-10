@@ -22,11 +22,5 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-central-1
           
-      - name: Upload to S3
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --acl public-read --delete
-          source_dir: html/
-          destination_dir: s3://nginxhtmlfiles/
-        env:
-          AWS_S3_BUCKET: nginxhtmlfiles
+      - name: Deploy static site to S3 bucket
+        run: aws s3 sync index.html s3://nginxhtmlfiles.com --delete  
