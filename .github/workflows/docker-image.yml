@@ -1,4 +1,4 @@
-name: Backend Cloud Deployment
+name: Nginx S3 bucket deployment
 
 on:
   push:
