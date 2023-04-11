@@ -23,9 +23,4 @@ jobs:
           aws-region: eu-central-1
           
       - name: Deploy static site to S3 bucket
-        run:
-          cd ..
-          ls
-          echo "Buna"
-          pwd
-          aws s3 sync /usr/share/nginx/html s3://nginxhtmlfiles/ --delete  
+        run: aws s3 sync /usr/share/nginx/html s3://nginxhtmlfiles/ --delete  
