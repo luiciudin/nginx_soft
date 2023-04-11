@@ -10,11 +10,7 @@ jobs:
     steps:
       - name: Initial checkout
         uses: actions/checkout@v3
-
-  deploy:
-    runs-on: ubuntu-22.04
-    needs: [build]
-    steps:
+    
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
